@@ -96,26 +96,26 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-module "workers" {
+module "amazon_linux_ec2s" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "5.8.0"
 
-  count                  = var.worker_count
-  name                   = "${var.instance_prefix}-worker-${count.index + 1}"
-  ami                    = var.ami
+  count                  = var.instance_count
+  name                   = "${var.instance_prefix}-amazon-linux-${count.index + 1}"
+  ami                    = var.amazon_linux_ami
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   subnet_id              = module.vpc.private_subnets[0]
   key_name               = "bastion-key"
 }
 
-module "managers" {
+module "ubuntu_ec2s" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "5.8.0"
 
-  count                  = var.manager_count
-  name                   = "${var.instance_prefix}-manager-${count.index + 1}"
-  ami                    = var.ami
+  count                  = var.instance_count
+  name                   = "${var.instance_prefix}-ubuntu-${count.index + 1}"
+  ami                    = var.ubuntu_ami
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   subnet_id              = module.vpc.private_subnets[0]
